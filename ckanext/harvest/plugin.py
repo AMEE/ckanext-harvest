@@ -20,6 +20,9 @@ assert not log.disabled
 
 DATASET_TYPE_NAME = 'harvest'
 
+def dcedh_deny_access(context, data_dict):
+    return {'success': False, 'msg': 'You are not authorized'}
+    
 class Harvest(p.SingletonPlugin, DefaultDatasetForm):
 
     p.implements(p.IConfigurable)
@@ -240,11 +243,27 @@ class Harvest(p.SingletonPlugin, DefaultDatasetForm):
     ## IAuthFunctions
 
     def get_auth_functions(self):
-
-        module_root = 'ckanext.harvest.logic.auth'
-        auth_functions = _get_logic_functions(module_root)
-
-        return auth_functions
+        return {
+                'harvest_source_show': dcedh_deny_access,
+                'harvest_source_show_status': dcedh_deny_access,
+                'harvest_source_list': dcedh_deny_access,
+                'harvest_job_show': dcedh_deny_access,
+                'harvest_job_list': dcedh_deny_access,
+                'harvest_object_show': dcedh_deny_access,
+                'harvest_object_list': dcedh_deny_access,
+                'harvesters_info_show': dcedh_deny_access,
+                'harvest_source_update': dcedh_deny_access,
+                'harvest_source_clear': dcedh_deny_access,
+                'harvest_objects_import': dcedh_deny_access,
+                'harvest_jobs_run': dcedh_deny_access,
+                'harvest_sources_reindex': dcedh_deny_access,
+                'harvest_source_reindex': dcedh_deny_access,
+                'harvest_source_delete': dcedh_deny_access,
+                'harvest_source_create': dcedh_deny_access,
+                'harvest_job_create': dcedh_deny_access,
+                'harvest_job_create_all': dcedh_deny_access,
+                'harvest_object_create': dcedh_deny_access
+            }
 
     ## ITemplateHelpers
 
